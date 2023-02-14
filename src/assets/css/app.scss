@@ -1,0 +1,14 @@
+// app global css in SCSS form
+@import url("https://fonts.cdnfonts.com/css/proxima-nova-2?styles=44818,44820");
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Proxima Nova", sans-serif;
+}
+button {
+  text-transform: none !important;
+}
+p {
+  margin: 0;
+}

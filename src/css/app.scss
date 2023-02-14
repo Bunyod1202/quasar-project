@@ -1,0 +1,177 @@
+@import "../assets/css/mixsin.scss";
+@import "../css/quasar.variables.scss";
+// app global css in SCSS form
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Proxima Nova", sans-serif;
+}
+button {
+  text-transform: none !important;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+p {
+  margin: 0;
+}
+
+.filter-btn {
+  background-color: $grey-color;
+  border-radius: 8px;
+  color: $dark-color;
+}
+.btn-arrow {
+  transform: rotate(-90deg);
+  margin-left: 10px;
+  path {
+    stroke: $white-color;
+  }
+}
+.table {
+  margin-top: 24px;
+  width: 100%;
+  th {
+    text-align: left;
+    padding: 14px 18px;
+    &:nth-child(1) {
+      width: 50px;
+    }
+  }
+  td {
+    padding: 14px 18px;
+  }
+}
+.q-field__control {
+  border-radius: 12px !important;
+  &::before {
+    border: 1px solid $border-color !important;
+  }
+}
+.body {
+  thead {
+    tr:nth-child(odd) {
+      background-color: $white-color;
+    }
+  }
+  tr:nth-child(odd) {
+    background-color: $grey-color;
+  }
+}
+.categories-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: $dark-color;
+}
+.box {
+  padding: 24px;
+  height: 88vh;
+  overflow: auto;
+}
+
+.header,
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}
+.add-btn {
+  background-color: $warning-color;
+  color: $white-color;
+  border-radius: 8px;
+  margin-left: 12px;
+}
+.bax-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.file-input-wrapper {
+  width: 48%;
+}
+.filter-icon {
+  margin-right: 13px;
+}
+.pagination {
+  margin-top: 5px;
+}
+.left-arrow-icon {
+  margin-right: 14px;
+}
+.add-category-body {
+  width: 50%;
+  margin-top: 34px;
+}
+.lable-text {
+  margin-top: 18px;
+  @include typography-styles(normal, 14px, 17px, 600, left, $dark-color);
+  margin-bottom: 8px;
+}
+.input-file-title {
+  @include typography-styles(normal, 14px, 17px, 400, left, #a8aab0);
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
+.form-btn-group {
+  margin-top: 34px;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.add-category-btn {
+  width: 260px;
+  padding: 15px 10px;
+  background: $warning-color;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 145%;
+  color: $white-color;
+  margin-left: 24px;
+}
+.cencle-category-btn {
+  width: 260px;
+  margin-left: auto;
+  padding: 15px 10px;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 145%;
+  color: $warning-color;
+}
+@include desktop-first(900px) {
+  .add-category-body {
+    width: 100%;
+  }
+}
+@include desktop-first(600px) {
+  .form-btn-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  .cencle-category-btn {
+    margin: 0 0 10px 0 !important;
+  }
+  .add-category-btn {
+    margin: 0;
+  }
+  .header {
+    flex-direction: column;
+  }
+  .btn-group {
+    margin-top: 8px;
+    margin-left: auto;
+  }
+}
