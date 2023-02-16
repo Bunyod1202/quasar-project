@@ -98,8 +98,3 @@ defineExpose({
   resetValidation,
 });
 </script>
-
-<style lang="scss">
-.base-input {
-}
-</style>

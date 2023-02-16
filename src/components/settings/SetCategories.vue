@@ -4,16 +4,21 @@
       <div class="header">
         <p class="categories-title">Список категорий</p>
         <div class="btn-group">
-          <q-btn class="filter-btn"
-            ><FilterIcon class="filter-icon" />Фильтр</q-btn
-          >
-          <q-btn class="add-btn" @click="box = !box"
-            >Добавить <BottomArrowIcon class="btn-arrow"
-          /></q-btn>
+          <BaseButton
+            class="filter-icon"
+            :title="'Фильтр'"
+            :iconleft="FilterIcon"
+          />
+          <BaseButton
+            class="add-btn"
+            @click="box = !box"
+            :title="'Добавить'"
+            :iconright="ButtonArrowIcon"
+          />
         </div>
       </div>
       <div class="body">
-        <TableBlok />
+        <TableBlok :data="data" />
       </div>
     </div>
     <div class="box" v-else>
@@ -105,16 +110,23 @@
 import { ref } from "vue";
 import { useForm } from "vue-hooks-form";
 import FilterIcon from "../../assets/icons/FilterIcon";
-import BottomArrowIcon from "../../assets/icons/BottomArrowIcon";
+import ButtonArrowIcon from "../../assets/icons/ButtonArrowIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 import BaseFileInput from "../../components/ui/BaseFileInput";
 import AddPhoto from "../../assets/icons/AddPhoto";
 import CheckIcon from "../../assets/icons/CheckIcon";
 import TableBlok from "../TableBlok";
-import { PostCategoriesIpi } from "../../API/API";
+import {
+  GetCategoriesIpi,
+  GetMainCategoriesIpi,
+  PostCategoriesIpi,
+} from "../../API/API";
+import BaseButton from "../../components/ui/BaseButton";
+
 const current = ref(1);
 const box = ref(true);
 const imgurl = ref(null);
+const data = ref(null);
 let inputImg = ref(null);
 const res = (evt) => {
   console.log(evt.target.files[0]);
@@ -132,6 +144,21 @@ const options = ref([
     id: "0",
   },
 ]);
+const getMainCategoriesIpi = async () => {
+  const cardCasts = await GetMainCategoriesIpi().catch((err) =>
+    console.log(err)
+  );
+  options.value = cardCasts.data;
+  console.log(cardCasts.data);
+};
+getMainCategoriesIpi();
+const getCategoriesIpi = async () => {
+  const cardCasts = await GetCategoriesIpi().catch((err) => console.log(err));
+  data.value = cardCasts.data;
+  console.log(cardCasts.data);
+};
+getCategoriesIpi();
+
 const { useField, handleSubmit } = useForm({
   defaultValues: {},
 });
@@ -150,24 +177,24 @@ const category_uz_lat_name = useField("category_uz_lat_name", {
 
 const register = handleSubmit(async (data) => {
   // console.log(data.category_name.id);
-  const formData = new FormData();
-  console.log(inputImg.value);
-  formData.append("parentId", data.category_name.id);
-  formData.append("imageId", inputImg.value);
-  formData.append("name", [
-    { languageCode: "ru", text: data.category_ru_name },
-    { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
-    { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
-  ]);
-
+  const formData = {
+    parentId: data.category_name.id,
+    imageId: inputImg.value,
+    name: [
+      { languageCode: "ru", text: data.category_ru_name },
+      { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
+      { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
+    ],
+  };
+  getCategoriesIpi();
   console.log(data);
 
-  const RegisterApiUser = async () => {
+  const postCategoriesIpi = async () => {
     const cardCasts = await PostCategoriesIpi(formData).catch((err) =>
       console.log(err)
     );
     console.log(cardCasts);
   };
-  RegisterApiUser();
+  postCategoriesIpi();
 });
 </script>

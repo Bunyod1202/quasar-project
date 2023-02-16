@@ -42,9 +42,7 @@
                   >Администратор</q-item-section
                 >
               </span>
-              <span class="arrow-icon">
-                <BottomArrowIcon />
-              </span>
+              <span class="arrow-icon"> <DropArrowIcon />ss </span>
             </q-item>
             <q-menu anchor="bottom right" self="top right">
               <q-list style="min-width: 100px">
@@ -79,7 +77,7 @@
 import { ref } from "vue";
 import MenuIcons from "../assets/icons/MenuIcons";
 import SearchIcon from "../assets/icons/SearchIcon";
-import BottomArrowIcon from "../assets/icons/BottomArrowIcon";
+import DropArrowIcon from "../assets/icons/DropArrowIcon";
 import BaseInput from "../components/ui/BaseInput";
 import EssentialLink from "../components/EssentialLink";
 export default {
@@ -87,7 +85,7 @@ export default {
     MenuIcons,
     BaseInput,
     SearchIcon,
-    BottomArrowIcon,
+    DropArrowIcon,
     EssentialLink,
   },
   setup() {
@@ -157,9 +155,11 @@ export default {
   @include typography-styles(normal, 13px, 16px, 400, left, #a8aab0);
 }
 .arrow-icon {
-  margin: auto 0 auto 16px;
+  margin: auto 0 auto 5px;
 }
-
+.q-toolbar {
+  padding: 16px;
+}
 .menu-content {
   display: flex;
   // align-items: center;

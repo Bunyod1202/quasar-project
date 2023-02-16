@@ -1,0 +1,42 @@
+{
+  "mainCategory": [
+    {
+      "label": "Click",
+      "id": 1
+    },
+    {
+      "label": "Uzum",
+      "id": 2
+    },
+    {
+      "label": "Payme",
+      "id": 3
+    }
+  ],
+  "category": [
+    {
+      "parentId": 2,
+      "imageId": {},
+      "name": [
+        {
+          "languageCode": "ru",
+          "text": "нитро"
+        },
+        {
+          "languageCode": "uz-Latn-UZ",
+          "text": "нитро"
+        },
+        {
+          "languageCode": "uz-Cyrl-UZ",
+          "text": "nitro"
+        }
+      ],
+      "id": 1
+    }
+  ],
+  "brand": [],
+  "language": [],
+  "groupAtrebut": [],
+  "attributesToTheGroup": [],
+  "currency": []
+}

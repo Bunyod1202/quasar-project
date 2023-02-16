@@ -9,42 +9,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(item, index) in props.data" :key="index">
           <td>
             <q-btn flat round color="primary"><EditIcon /></q-btn>
           </td>
-          <td>66271</td>
-          <td>Hotpoint</td>
-        </tr>
-        <tr>
-          <td><EditIcon /></td>
-          <td>66271</td>
-          <td>Hotpoint</td>
-        </tr>
-        <tr>
-          <td><EditIcon /></td>
-          <td>66271</td>
-          <td>Hotpoint</td>
-        </tr>
-        <tr>
-          <td><EditIcon /></td>
-          <td>66271</td>
-          <td>Hotpoint</td>
-        </tr>
-        <tr>
-          <td><EditIcon /></td>
-          <td>66271</td>
-          <td>Hotpoint</td>
-        </tr>
-        <tr>
-          <td><EditIcon /></td>
-          <td>66271</td>
-          <td>Hotpoint</td>
-        </tr>
-        <tr>
-          <td><EditIcon /></td>
-          <td>66271</td>
-          <td>Hotpoint</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.name[0].text }}</td>
         </tr>
       </tbody>
     </table>
@@ -66,6 +36,9 @@
 import { ref } from "vue";
 import EditIcon from "../assets/icons/EditIcon";
 const current = ref(1);
+const props = defineProps({
+  data: null,
+});
 </script>
 
 <style lang="scss" scoped></style>

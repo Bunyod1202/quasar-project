@@ -4,12 +4,17 @@
       <div class="header">
         <p class="categories-title">Список атрибутов к группе</p>
         <div class="btn-group">
-          <q-btn class="filter-btn"
-            ><FilterIcon class="filter-icon" />Фильтр</q-btn
-          >
-          <q-btn class="add-btn" @click="box = !box"
-            >Добавить <BottomArrowIcon class="btn-arrow"
-          /></q-btn>
+          <BaseButton
+            class="filter-icon"
+            :title="'Фильтр'"
+            :iconleft="FilterIcon"
+          />
+          <BaseButton
+            class="add-btn"
+            @click="box = !box"
+            :title="'Добавить'"
+            :iconright="ButtonArrowIcon"
+          />
         </div>
       </div>
       <div class="body">
@@ -97,7 +102,7 @@ import { useForm } from "vue-hooks-form";
 
 import BaseButton from "../../components/ui/BaseButton";
 import FilterIcon from "../../assets/icons/FilterIcon";
-import BottomArrowIcon from "../../assets/icons/BottomArrowIcon";
+import ButtonArrowIcon from "../../assets/icons/ButtonArrowIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 import BaseFileInput from "../../components/ui/BaseFileInput";
 import AddPhoto from "../../assets/icons/AddPhoto";

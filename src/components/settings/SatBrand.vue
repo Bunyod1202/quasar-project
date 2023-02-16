@@ -4,16 +4,21 @@
       <div class="header">
         <p class="categories-title">Список брендов</p>
         <div class="btn-group">
-          <q-btn class="filter-btn"
-            ><FilterIcon class="filter-icon" />Фильтр</q-btn
-          >
-          <q-btn class="add-btn" @click="box = !box"
-            >Добавить <BottomArrowIcon class="btn-arrow"
-          /></q-btn>
+          <BaseButton
+            class="filter-icon"
+            :title="'Фильтр'"
+            :iconleft="FilterIcon"
+          />
+          <BaseButton
+            class="add-btn"
+            @click="box = !box"
+            :title="'Добавить'"
+            :iconright="ButtonArrowIcon"
+          />
         </div>
       </div>
       <div class="body">
-        <TableBlok />
+        <TableBlok :data="data" />
       </div>
     </div>
     <div class="box" v-else>
@@ -93,21 +98,23 @@
 import { ref } from "vue";
 import { useForm } from "vue-hooks-form";
 import FilterIcon from "../../assets/icons/FilterIcon";
-import BottomArrowIcon from "../../assets/icons/BottomArrowIcon";
+import ButtonArrowIcon from "../../assets/icons/ButtonArrowIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 import BaseFileInput from "../../components/ui/BaseFileInput";
 import TheViolinIcon from "../../assets/icons/TheViolinIcon";
 import CheckIcon from "../../assets/icons/CheckIcon";
 import TableBlok from "../TableBlok";
-
+import BaseButton from "../../components/ui/BaseButton";
 import { PostCategoriesIpi } from "../../API/API";
+
 const current = ref(1);
 const box = ref(true);
 const imgurl = ref(null);
-let inputImg = null;
+const data = ref(null);
+let inputImg = ref(null);
 const res = (evt) => {
   console.log(evt.target.files[0]);
-  inputImg = evt.target.files[0];
+  inputImg.value = evt.target.files[0];
   let img = evt.target.files[0];
   const fileReader = new FileReader();
   fileReader.readAsDataURL(img);
@@ -115,12 +122,13 @@ const res = (evt) => {
     imgurl.value = this.result;
   });
 };
-const options = ref([
-  {
-    label: "ssssssss",
-    id: "1",
-  },
-]);
+const getCategoriesIpi = async () => {
+  const cardCasts = await GetCategoriesIpi().catch((err) => console.log(err));
+  data.value = cardCasts.data;
+  console.log(cardCasts.data);
+};
+getCategoriesIpi();
+
 const { useField, handleSubmit } = useForm({
   defaultValues: {},
 });
@@ -138,29 +146,24 @@ const category_uz_lat_name = useField("category_uz_lat_name", {
 });
 
 const register = handleSubmit(async (data) => {
-  console.log(register);
-  const formData = new FormData();
-
-  formData.append("parentId", data.category_name);
-  formData.append(
-    "imageId",
-    "https://www.amp-solar.com/media/SlikeIT/panasonic-325-330w.jpg"
-  );
-  formData.append("name", [
-    { languageCode: "ru", text: data.category_ru_name },
-    { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
-    { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
-  ]);
-
-  console.log(inputImg);
+  // console.log(data.category_name.id);
+  const formData = {
+    imageId: inputImg.value,
+    name: [
+      { languageCode: "ru", text: data.category_ru_name },
+      { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
+      { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
+    ],
+  };
+  getCategoriesIpi();
   console.log(data);
 
-  const RegisterApiUser = async () => {
+  const postCategoriesIpi = async () => {
     const cardCasts = await PostCategoriesIpi(formData).catch((err) =>
       console.log(err)
     );
     console.log(cardCasts);
   };
-  RegisterApiUser();
+  postCategoriesIpi();
 });
 </script>

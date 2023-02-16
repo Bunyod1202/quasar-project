@@ -27,7 +27,7 @@ const props = defineProps({
 
 <style lang="scss">
 .globl-btn {
-  display: flex !important;
+  display: flex;
   align-items: center;
 }
 .btn-left-icon {

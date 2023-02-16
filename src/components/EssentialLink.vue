@@ -53,7 +53,6 @@ import FundsControlIcon from "../assets/icons/ponelIcon/FundsControlIcon";
 import ModerationIcon from "../assets/icons/ponelIcon/ModerationIcon";
 import SettingsIcon from "../assets/icons/ponelIcon/SettingsIcon";
 import GoOutIcon from "../assets/icons/ponelIcon/GoOutIcon";
-import BottomArrowIcon from "../assets/icons/BottomArrowIcon";
 const link = ref("inbox");
 const menu = ref([
   {
@@ -168,6 +167,17 @@ const menu = ref([
   }
   position: relative;
   .menu-title {
+    color: #ff9243;
+  }
+  .menu-icons {
+    circle {
+      stroke: #ff9243 !important;
+    }
+    path {
+      stroke: #ff9243 !important;
+    }
+  }
+  .menu-title {
     &::after {
       content: "";
       position: absolute;
@@ -188,11 +198,6 @@ const menu = ref([
   }
   .arrow-icon {
     display: none;
-  }
-  .menu-icons {
-    path {
-      stroke: #ff9243;
-    }
   }
 }
 .arrow-icon {

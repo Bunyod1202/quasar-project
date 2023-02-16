@@ -1,14 +1,14 @@
 <template>
   <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
+    width="20"
+    height="21"
+    viewBox="0 0 20 21"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M6 9L12 15L18 9"
-      stroke="#C7CAD4"
+      d="M7.5 5.5L12.5 10.5L7.5 15.5"
+      stroke="white"
       stroke-width="1.5"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -17,9 +17,7 @@
 </template>
 
 <script>
-export default {
-  name: "BottomArrowIcon",
-};
+export default {};
 </script>
 
 <style></style>
