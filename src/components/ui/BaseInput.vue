@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, useAttrs } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -37,54 +37,7 @@ const props = defineProps({
   },
 });
 
-// const emit = defineEmits(["update:modelValue"]);
-
-// const attrs = useAttrs();
-
-// onBeforeUnmount(() => {
-//   inputEl?.removeEventListener("keydown", fixCursorPosition);
-// });
-
 const inputRef = ref(null);
-let inputEl = null;
-
-// onMounted(() => {
-//   init();
-// });
-
-// function init() {
-//   const $el = inputRef.value?.$el;
-//   if (attrs.mask && $el) {
-//     inputEl = $el.getElementsByTagName("input")[0];
-//     inputEl.addEventListener("keydown", fixCursorPosition);
-//   }
-// }
-
-const fixCursorPosition = (e) => {
-  if (e.code === "ArrowLeft" || e.code === "ArrowRight") return;
-
-  const start = inputEl.selectionStart;
-  if (e.code === "Backspace") {
-    setTimeout(() => setCursorPosition(e.target, start));
-  } else {
-    setTimeout(() => {
-      let newStart = start + 1;
-
-      // is right value space?
-      if (e.target.value[start + 1] === " ") newStart = start + 2;
-
-      setCursorPosition(e.target, newStart);
-    });
-  }
-};
-
-const setCursorPosition = (el, position) => {
-  el.selectionStart = el.selectionEnd = position;
-};
-
-function change(v) {
-  emit("update:modelValue", v);
-}
 
 function focus() {
   inputRef.value.focus();

@@ -32,6 +32,25 @@
         }
       ],
       "id": 1
+    },
+    {
+      "parentId": 1,
+      "imageId": {},
+      "name": [
+        {
+          "languageCode": "ru",
+          "text": "мега"
+        },
+        {
+          "languageCode": "uz-Latn-UZ",
+          "text": "мега"
+        },
+        {
+          "languageCode": "uz-Cyrl-UZ",
+          "text": "mega"
+        }
+      ],
+      "id": 2
     }
   ],
   "brand": [],

@@ -31,7 +31,7 @@
         <form @submit.prevent="register">
           <div>
             <p class="lable-text">Название Русский язык</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_ru_name.value"
               :ref="category_ru_name.ref"
@@ -43,7 +43,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (кирилл.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_krl_name.value"
               :ref="category_uz_krl_name.ref"
@@ -55,7 +55,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (лат.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_lat_name.value"
               :ref="category_uz_lat_name.ref"
@@ -101,29 +101,16 @@ import { ref } from "vue";
 import { useForm } from "vue-hooks-form";
 
 import BaseButton from "../../components/ui/BaseButton";
+import BaseInput from "../../components/ui/BaseInput";
 import FilterIcon from "../../assets/icons/FilterIcon";
 import ButtonArrowIcon from "../../assets/icons/ButtonArrowIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
-import BaseFileInput from "../../components/ui/BaseFileInput";
-import AddPhoto from "../../assets/icons/AddPhoto";
 import CheckIcon from "../../assets/icons/CheckIcon";
 import TableBlok from "../TableBlok";
-
 import { PostCategoriesIpi } from "../../API/API";
-const current = ref(1);
+
 const box = ref(true);
-const imgurl = ref(null);
-let inputImg = ref(null);
-const res = (evt) => {
-  console.log(evt.target.files[0]);
-  inputImg.value = evt.target.files[0];
-  let img = evt.target.files[0];
-  const fileReader = new FileReader();
-  fileReader.readAsDataURL(img);
-  fileReader.addEventListener("load", function () {
-    imgurl.value = this.result;
-  });
-};
+
 const options = ref([
   {
     label: "ssssssss",

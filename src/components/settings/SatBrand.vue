@@ -28,10 +28,10 @@
         </p>
       </div>
       <div class="add-category-body">
-        <form @submit.prevent="register">
+        <form @submit.prevent="addBrand">
           <div>
             <p class="lable-text">Название Русский язык</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_ru_name.value"
               :ref="category_ru_name.ref"
@@ -43,7 +43,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (кирилл.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_krl_name.value"
               :ref="category_uz_krl_name.ref"
@@ -55,7 +55,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (лат.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_lat_name.value"
               :ref="category_uz_lat_name.ref"
@@ -72,7 +72,7 @@
               :title="'Логотип бренда'"
               :icon="TheViolinIcon"
               :imgurl="imgurl"
-              @change="res"
+              @change="addInputFile"
             />
           </div>
           <div class="form-btn-group">
@@ -105,16 +105,42 @@ import TheViolinIcon from "../../assets/icons/TheViolinIcon";
 import CheckIcon from "../../assets/icons/CheckIcon";
 import TableBlok from "../TableBlok";
 import BaseButton from "../../components/ui/BaseButton";
-import { PostCategoriesIpi } from "../../API/API";
+import BaseInput from "../../components/ui/BaseInput";
+import { GetBrandIpi, PostBrandIpi, PostFileIpi } from "../../API/API";
 
-const current = ref(1);
 const box = ref(true);
+
+// Get Category api started
+
+const data = ref([]);
+const getBrandApi = async () => {
+  const getBrand = await GetBrandIpi().catch((err) => console.log(err));
+  console.log(getBrand);
+  if (getBrand.status === 200) {
+    data.value = getBrand.data.item;
+  }
+};
+
+getBrandApi();
+
+// Get category api finished
+
+// Post file api started
 const imgurl = ref(null);
-const data = ref(null);
-let inputImg = ref(null);
-const res = (evt) => {
-  console.log(evt.target.files[0]);
-  inputImg.value = evt.target.files[0];
+let inputImg = null;
+const addInputFile = (evt) => {
+  const fileApiCategoryes = async () => {
+    const formData = new FormData();
+    formData.append("files", evt.target.files[0]);
+    const fileCategoryAdd = await PostFileIpi(formData).catch((err) =>
+      console.log(err)
+    );
+    if (fileCategoryAdd.status === 200) {
+      inputImg = fileCategoryAdd.data[0].id;
+    }
+  };
+  fileApiCategoryes();
+
   let img = evt.target.files[0];
   const fileReader = new FileReader();
   fileReader.readAsDataURL(img);
@@ -122,18 +148,11 @@ const res = (evt) => {
     imgurl.value = this.result;
   });
 };
-const getCategoriesIpi = async () => {
-  const cardCasts = await GetCategoriesIpi().catch((err) => console.log(err));
-  data.value = cardCasts.data;
-  console.log(cardCasts.data);
-};
-getCategoriesIpi();
+// Post file api finished
 
+// Form values started
 const { useField, handleSubmit } = useForm({
   defaultValues: {},
-});
-const category_name = useField("category_name", {
-  rule: { required: true },
 });
 const category_ru_name = useField("category_ru_name", {
   rule: { required: true },
@@ -144,26 +163,26 @@ const category_uz_krl_name = useField("category_uz_krl_name", {
 const category_uz_lat_name = useField("category_uz_lat_name", {
   rule: { required: true },
 });
+// Form values started
 
-const register = handleSubmit(async (data) => {
-  // console.log(data.category_name.id);
-  const formData = {
-    imageId: inputImg.value,
-    name: [
-      { languageCode: "ru", text: data.category_ru_name },
-      { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
-      { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
-    ],
+// Post Category api started
+const addBrand = handleSubmit(async (data) => {
+  const postBrandApi = async () => {
+    const postCategory = await PostBrandIpi({
+      logoBase64: inputImg,
+      name: [
+        { languageCode: "ru", text: data.category_ru_name },
+        { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
+        { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
+      ],
+    }).catch((err) => console.log(err));
+    if (postCategory.status === 200) {
+      box.value = true;
+      getBrandApi();
+    }
+    console.log(postCategory);
   };
-  getCategoriesIpi();
-  console.log(data);
-
-  const postCategoriesIpi = async () => {
-    const cardCasts = await PostCategoriesIpi(formData).catch((err) =>
-      console.log(err)
-    );
-    console.log(cardCasts);
-  };
-  postCategoriesIpi();
+  postBrandApi();
 });
+// Post Category api finished
 </script>

@@ -42,7 +42,7 @@
           </div>
           <div>
             <p class="lable-text">Название Русский язык</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_ru_name.value"
               :ref="category_ru_name.ref"
@@ -54,7 +54,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (кирилл.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_krl_name.value"
               :ref="category_uz_krl_name.ref"
@@ -66,7 +66,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (лат.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_lat_name.value"
               :ref="category_uz_lat_name.ref"
@@ -123,11 +123,12 @@ import { useForm } from "vue-hooks-form";
 import FilterIcon from "../../assets/icons/FilterIcon";
 import ButtonArrowIcon from "../../assets/icons/ButtonArrowIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
-import BaseFileInput from "../../components/ui/BaseFileInput";
 import AddPhoto from "../../assets/icons/AddPhoto";
 import CheckIcon from "../../assets/icons/CheckIcon";
 import TableBlok from "../TableBlok";
+import BaseFileInput from "../ui/BaseFileInput";
 import BaseButton from "../ui/BaseButton";
+import BaseInput from "../ui/BaseInput";
 
 import { PostCategoriesIpi } from "../../API/API";
 
@@ -174,9 +175,11 @@ const register = handleSubmit(async (data) => {
     "https://www.amp-solar.com/media/SlikeIT/panasonic-325-330w.jpg"
   );
   formData.append("name", [
-    { languageCode: "ru", text: data.category_ru_name },
-    { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
-    { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
+    [
+      { languageCode: "ru", text: data.category_ru_name },
+      { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
+      { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
+    ],
   ]);
 
   const RegisterApiUser = async () => {

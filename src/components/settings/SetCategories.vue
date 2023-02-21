@@ -28,7 +28,7 @@
         </p>
       </div>
       <div class="add-category-body">
-        <form @submit.prevent="register">
+        <form @submit.prevent="addCategory">
           <div>
             <p class="lable-text">Главная категория</p>
             <q-select
@@ -42,7 +42,7 @@
           </div>
           <div>
             <p class="lable-text">Название Русский язык</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_ru_name.value"
               :ref="category_ru_name.ref"
@@ -54,7 +54,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (кирилл.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_krl_name.value"
               :ref="category_uz_krl_name.ref"
@@ -66,7 +66,7 @@
           </div>
           <div>
             <p class="lable-text">Название Узбекский язык (лат.)</p>
-            <q-input
+            <BaseInput
               outlined
               v-model="category_uz_lat_name.value"
               :ref="category_uz_lat_name.ref"
@@ -84,7 +84,7 @@
               :title="'Фото товара'"
               :icon="AddPhoto"
               :imgurl="imgurl"
-              @change="res"
+              @change="addInputFile"
             />
           </div>
           <div class="form-btn-group">
@@ -112,25 +112,53 @@ import { useForm } from "vue-hooks-form";
 import FilterIcon from "../../assets/icons/FilterIcon";
 import ButtonArrowIcon from "../../assets/icons/ButtonArrowIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
-import BaseFileInput from "../../components/ui/BaseFileInput";
-import AddPhoto from "../../assets/icons/AddPhoto";
 import CheckIcon from "../../assets/icons/CheckIcon";
+import AddPhoto from "../../assets/icons/AddPhoto";
+import BaseInput from "../../components/ui/BaseInput";
+import BaseFileInput from "../../components/ui/BaseFileInput";
 import TableBlok from "../TableBlok";
 import {
   GetCategoriesIpi,
-  GetMainCategoriesIpi,
   PostCategoriesIpi,
+  PostFileIpi,
 } from "../../API/API";
 import BaseButton from "../../components/ui/BaseButton";
 
-const current = ref(1);
 const box = ref(true);
+
+// Get Category api started
+
+const data = ref([]);
+const getCategoryesApi = async () => {
+  const getCategories = await GetCategoriesIpi().catch((err) =>
+    console.log(err)
+  );
+  console.log(getCategories);
+  if (getCategories.status === 200) {
+    data.value = getCategories.data.item[2].childs;
+  }
+};
+
+getCategoryesApi();
+
+// Get category api finished
+
+// Post file api starteded
 const imgurl = ref(null);
-const data = ref(null);
-let inputImg = ref(null);
-const res = (evt) => {
-  console.log(evt.target.files[0]);
-  inputImg.value = evt.target.files[0];
+let inputImg = null;
+const addInputFile = (evt) => {
+  const fileApiCategoryes = async () => {
+    const formData = new FormData();
+    formData.append("files", evt.target.files[0]);
+    const fileCategoryAdd = await PostFileIpi(formData).catch((err) =>
+      console.log(err)
+    );
+    if (fileCategoryAdd.status === 200) {
+      inputImg = fileCategoryAdd.data[0].id;
+    }
+  };
+  fileApiCategoryes();
+
   let img = evt.target.files[0];
   const fileReader = new FileReader();
   fileReader.readAsDataURL(img);
@@ -138,27 +166,15 @@ const res = (evt) => {
     imgurl.value = this.result;
   });
 };
+// Post file api finished
+
+// Form values started
 const options = ref([
   {
     label: "ssssssss",
-    id: "0",
+    id: 12,
   },
 ]);
-const getMainCategoriesIpi = async () => {
-  const cardCasts = await GetMainCategoriesIpi().catch((err) =>
-    console.log(err)
-  );
-  options.value = cardCasts.data;
-  console.log(cardCasts.data);
-};
-getMainCategoriesIpi();
-const getCategoriesIpi = async () => {
-  const cardCasts = await GetCategoriesIpi().catch((err) => console.log(err));
-  data.value = cardCasts.data;
-  console.log(cardCasts.data);
-};
-getCategoriesIpi();
-
 const { useField, handleSubmit } = useForm({
   defaultValues: {},
 });
@@ -174,27 +190,27 @@ const category_uz_krl_name = useField("category_uz_krl_name", {
 const category_uz_lat_name = useField("category_uz_lat_name", {
   rule: { required: true },
 });
+//Form values finished
 
-const register = handleSubmit(async (data) => {
-  // console.log(data.category_name.id);
-  const formData = {
-    parentId: data.category_name.id,
-    imageId: inputImg.value,
-    name: [
-      { languageCode: "ru", text: data.category_ru_name },
-      { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
-      { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
-    ],
+// Post Category api started
+const addCategory = handleSubmit(async (data) => {
+  const postCategoryApi = async () => {
+    const postCategory = await PostCategoriesIpi({
+      parentId: data.category_name.id,
+      imageId: inputImg,
+      name: [
+        { languageCode: "ru", text: data.category_ru_name },
+        { languageCode: "uz-Latn-UZ", text: data.category_uz_krl_name },
+        { languageCode: "uz-Cyrl-UZ", text: data.category_uz_lat_name },
+      ],
+    }).catch((err) => console.log(err));
+    if (postCategory.status === 200) {
+      box.value = true;
+      getCategoryesApi();
+    }
+    console.log(postCategory);
   };
-  getCategoriesIpi();
-  console.log(data);
-
-  const postCategoriesIpi = async () => {
-    const cardCasts = await PostCategoriesIpi(formData).catch((err) =>
-      console.log(err)
-    );
-    console.log(cardCasts);
-  };
-  postCategoriesIpi();
+  postCategoryApi();
 });
+// Post Category api finished
 </script>
